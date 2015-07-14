@@ -23,7 +23,7 @@ sudo apt-get -y install mesos marathon
 echo $NODE_ID > /etc/zookeeper/conf/myid
 for i in $(seq 1 $SIZE)
 do
-  echo "server.$i=${IPS[$i - 1]}:2888:3888" >> /etc/zookeeper/conf/zoo.conf
+  echo "server.$i=${IPS[$i - 1]}:2888:3888" >> /etc/zookeeper/conf/zoo.cfg
 done
 sudo service zookeeper restart
 
