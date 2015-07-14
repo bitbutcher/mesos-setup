@@ -6,8 +6,8 @@ if [ -z "$1" ] ; then
 fi
 for IP in "$@"
 do
-  if ! [[ $IP =~ '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$' ]] ; then
-     echo $USAGE >&2; exit 1
+  if ! [[ "$IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] ; then
+    echo $USAGE >&2; exit 1
   fi
 done
 

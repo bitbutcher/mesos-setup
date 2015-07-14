@@ -2,8 +2,8 @@
 
 USAGE="Usage: master.sh <node_id> <master_ip> [master_ip...]"
 
-if ! [[ $1 =~ '^[0-9]+$' ]] ; then
-   echo $USAGE >&2; exit 1
+if ! [[ $1 =~ ^[0-9]+$ ]] ; then
+  echo $USAGE >&2; exit 1
 fi
 
 NODE_ID=$1

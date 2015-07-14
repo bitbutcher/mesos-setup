@@ -2,7 +2,7 @@
 
 USAGE="slave.sh <node_ip> <master_ip> [master_ip...]"
 
-if ! [[ $1 =~ '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$' ]] ; then
+if ! [[ $1 =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] ; then
    echo $USAGE >&2; exit 1
 fi
 
