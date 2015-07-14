@@ -29,5 +29,5 @@ function mesos-cluster {
   do
     ZKS+=("${IP}:2181")
   done
-  echo "zk://$(join , "${ZKS[@]}")/mesos" #> /etc/mesos/zk
+  echo "zk://$(join , "${ZKS[@]}")/mesos" > /etc/mesos/zk
 }

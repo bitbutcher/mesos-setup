@@ -32,6 +32,7 @@ mesos-cluster
 
 # configure hostnames as ip addresses for VPN access to web consoles
 echo $NODE_IP > /etc/mesos-master/hostname
+mkdir -p /etc/marathon/conf
 echo $NODE_IP > /etc/marathon/conf/hostname
 
 # set the quorum size based on the number of nodes
