@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
 
+USAGE="Usage: master.sh <node_id> <master_ip> [master_ip...]"
+
+if ! [[ $1 =~ '^[0-9]+$' ]] ; then
+   echo $USAGE >&2; exit 1
+fi
+
 NODE_ID=$1
 shift
 IPS=( "$@" )
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$SCRIPT_DIR/common.sh"
+
 NODE_IP=${IPS[$NODE_ID - 1]}
 SIZE=${#IPS[@]}
-
-source ./common.sh
 
 # install mesos and marathon
 sudo apt-get -y install mesos marathon

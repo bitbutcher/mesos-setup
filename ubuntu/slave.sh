@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
+USAGE="slave.sh <node_ip> <master_ip> [master_ip...]"
+
+if ! [[ $1 =~ '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$' ]] ; then
+   echo $USAGE >&2; exit 1
+fi
+
 NODE_IP=$1
 shift
 IPS=( "$@" )
 
-source ./common.sh
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$SCRIPT_DIR/common.sh"
 
 # install mesos
 sudo apt-get -y install mesos

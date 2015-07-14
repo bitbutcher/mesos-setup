@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+# validate master ip list
+if [ -z "$1" ] ; then
+  echo $USAGE >&2; exit 1
+fi
+for IP in "$@"
+do
+  if ! [[ $IP =~ '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$' ]] ; then
+     echo $USAGE >&2; exit 1
+  fi
+done
+
 # Setup
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
 DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
