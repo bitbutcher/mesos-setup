@@ -31,7 +31,7 @@ mkdir -p /etc/marathon/conf
 echo $NODE_IP > /etc/marathon/conf/hostname
 
 # add the docker containerizer
-sudo apt-get install docker
+curl -sSL https://get.docker.com/ | sh
 echo 'docker,mesos' > /etc/mesos-slave/containerizers
 echo '5mins' > /etc/mesos-slave/executor_registration_timeout
 
