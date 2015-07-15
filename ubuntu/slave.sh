@@ -30,5 +30,10 @@ echo $NODE_IP > /etc/mesos-slave/hostname
 mkdir -p /etc/marathon/conf
 echo $NODE_IP > /etc/marathon/conf/hostname
 
+# add the docker containerizer
+sudo apt-get install docker
+echo 'docker,mesos' > /etc/mesos-slave/containerizers
+echo '5mins' > /etc/mesos-slave/executor_registration_timeout
+
 # restart the mesos slave service
 sudo service mesos-slave restart
