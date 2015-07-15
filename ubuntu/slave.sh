@@ -27,6 +27,7 @@ mesos-cluster
 
 # configure hostnames as ip addresses for VPN access to web consoles
 echo $NODE_IP > /etc/mesos-slave/hostname
+mkdir -p /etc/marathon/conf
 echo $NODE_IP > /etc/marathon/conf/hostname
 
 # restart the mesos slave service
