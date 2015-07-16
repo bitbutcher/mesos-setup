@@ -7,7 +7,7 @@ if [ -z "${DATACENTER}" ]; then
   echo "DATACENTER env var must be set. Aborting consul install." >&2; exit 1
 fi
 
-JOIN_CLUSTER=$(filter $NODE_IP "${IPS[@]}")
+JOIN_CLUSTER=($(filter $NODE_IP "${IPS[@]}"))
 echo "JOIN_CLUSTER: $JOIN_CLUSTER"
 if [ "$NODE_IP" == "${IPS[0]}" ]; then
   CONSUL_ROLE="bootstrap"
@@ -21,7 +21,7 @@ else
     CONSUL_ROLE="server"
   fi
 fi
-echo "CONSUL_ROLE: $CONSUE_ROLE"
+echo "CONSUL_ROLE: $CONSUL_ROLE"
 
 sudo apt-get install -y unzip
 
