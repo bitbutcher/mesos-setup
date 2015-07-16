@@ -8,7 +8,7 @@ if [ -z "${DATACENTER}" ]; then
 fi
 
 JOIN_CLUSTER=$(filter $NODE_IP "${IPS[@]}")
-echo "JOIN_CLUSTER = $JOIN_CLUSTER"
+echo "JOIN_CLUSTER: $JOIN_CLUSTER"
 if [ "$NODE_IP" == "${IPS[0]}" ]; then
   CONSUL_ROLE="bootstrap"
 else
@@ -21,6 +21,7 @@ else
     CONSUL_ROLE="server"
   fi
 fi
+echo "CONSUL_ROLE: $CONSUE_ROLE"
 
 sudo apt-get install -y unzip
 
@@ -28,10 +29,11 @@ sudo apt-get install -y unzip
 sudo adduser consul
 
 # install the base consul binaries
-curl -0L "https://dl.bintray.com/mitchellh/consul/${CONSUL_VERSION}_linux_amd64.zip"
-unzip "${CONSUL_VERSION}_linux_amd64.zip"
+CONSUL_BIN_ZIP="${CONSUL_VERSION}_linux_amd64.zip"
+curl "https://dl.bintray.com/mitchellh/consul/${CONSUL_BIN_ZIP}" > "${CONSUL_BIN_ZIP}"
+unzip "${CONSUL_BIN_ZIP}"
 sudo mv consul /usr/local/bin/consul
-rm "${CONSUL_VERSION}_linux_amd64.zip"
+rm "${CONSUL_BIN_ZIP}"
 
 # setup configurations for all agent roles
 if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
@@ -57,12 +59,13 @@ cp "${SCRIPT_DIR}/consul/init.conf" "/etc/init/consul.conf"
 
 if [ "${CONSUL_ROLE}" == "client" ]; then
   # install the web ui on the slave
-  curl -0L "https://dl.bintray.com/mitchellh/consul/${CONSUL_VERSION}_web_ui.zip"
-  unzip "${CONSUL_VERSION}_web_ui.zip"
+  CONSUL_WEB_ZIP="${CONSUL_VERSION}_web_ui.zip"
+  curl "https://dl.bintray.com/mitchellh/consul/${CONSUL_WEB_ZIP}" > "${CONSUL_WEB_ZIP}"
+  unzip "${CONSUL_WEB_ZIP}"
   sudo mkdir -p /usr/share/consul
   sudo mv dist /usr/share/consul/ui
   sudo chown -R consul:consul /usr/share/consul
-  rm "${CONSUL_VERSION}_web_ui.zip"
+  rm "${CONSUL_WEB_ZIP}"
 
   # set the role of the upstart service to 'client'
   sed -e "s/{{role}}/client" "/etc/init/consul.conf"
