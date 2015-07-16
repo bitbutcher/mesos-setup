@@ -1,3 +1,5 @@
+stop consul
+
 # consul
 rm -rf /var/lib/consul
 rm /usr/local/bin/consul
