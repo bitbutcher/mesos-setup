@@ -85,4 +85,4 @@ SUB
 fi
 
 # start up the consul service
-start consul
+service consul start

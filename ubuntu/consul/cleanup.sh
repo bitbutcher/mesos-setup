@@ -1,4 +1,4 @@
-stop consul
+service consul stop
 
 # consul
 rm -rf /var/lib/consul
