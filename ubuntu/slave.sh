@@ -37,3 +37,6 @@ echo '5mins' > /etc/mesos-slave/executor_registration_timeout
 
 # restart the mesos slave service
 sudo service mesos-slave restart
+
+# conditionally install consul
+source "$SCRIPT_DIR/consul.sh"

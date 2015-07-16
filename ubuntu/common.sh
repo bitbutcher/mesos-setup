@@ -11,6 +11,8 @@ do
   fi
 done
 
+sudo apt-get install -y curl
+
 # Setup
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
 DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
@@ -32,5 +34,5 @@ function surround { local str=$1; shift; echo $(fore $str $(aft $str "$@")); }
 function filter { local pattern=$1; shift; eval echo "\"\${@//${pattern}/}\""; }
 
 function mesos-cluster {
-  echo "zk://$(join , $(aft :2181 "${IPS[@]}"))/mesos" #> /etc/mesos/zk
+  echo "zk://$(join , $(aft :2181 "${IPS[@]}"))/mesos" > /etc/mesos/zk
 }

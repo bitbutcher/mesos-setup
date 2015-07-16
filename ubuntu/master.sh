@@ -45,3 +45,6 @@ sudo sh -c "echo manual > /etc/init/mesos-slave.override"
 # restart mesos master and marathon
 sudo service mesos-master restart
 sudo service marathon restart
+
+# conditionally install consul
+source "$SCRIPT_DIR/consul.sh"
