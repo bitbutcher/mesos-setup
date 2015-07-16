@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 
-if [ -z "${CONSUL_VERSION}" ] ; then
+if [ -z "${CONSUL_VERSION}" ]; then
   echo "CONSUL_VERSION env var must be set. Aborting consul install." >&2; exit 1
 fi
-if [ -z "${DATACENTER}" ] ; then
+if [ -z "${DATACENTER}" ]; then
   echo "DATACENTER env var must be set. Aborting consul install." >&2; exit 1
 fi
 
-JOIN_CLUSTER=$(join , $(surround \" $(filter $NODE_IP "${IPS[@]}")))
-if [ "$NODE_IP" -eq "${IPS[0]}"]; then
+JOIN_CLUSTER=$(filter $NODE_IP "${IPS[@]}")
+echo "JOIN_CLUSTER = $JOIN_CLUSTER"
+if [ "$NODE_IP" == "${IPS[0]}" ]; then
   CONSUL_ROLE="bootstrap"
 else
-  if [ -z "${CONSUL_KEY}" ] ; then
+  if [ -z "${CONSUL_KEY}" ]; then
     echo "CONSUL_KEY env var must be set for non-bootstrap role. Aborting consul install." >&2; exit 1
   fi
-  if [ ${#IPS[@]} -eq ${#JOIN_CLUSTER[@]} ]; then
+  if [ ${#IPS[@]} == ${#JOIN_CLUSTER[@]} ]; then
     CONSUL_ROLE="client"
   else
     CONSUL_ROLE="server"
@@ -33,11 +34,12 @@ sudo mv consul /usr/local/bin/consul
 rm "${CONSUL_VERSION}_linux_amd64.zip"
 
 # setup configurations for all agent roles
-if [ "${CONSUL_ROLE}" -eq "bootstrap" ]; then
+if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
   CONSUL_KEY=$(consul keygen)
   echo "!!! SAVE THIS KEY >>> ${CONSUL_KEY} <<< SAVE THIS KEY !!!"
 fi
 
+JOIN_CLUSTER=$(join , $(surround \" "${JOIN_CLUSTER[@]}"))
 for ROLE in "bootrap server client"
 do
   local CONF_DIR="/etc/consul.d/${ROLE}"
@@ -53,7 +55,7 @@ sudo chown -R consul:consul /var/lib/consul
 # create the upstart service
 cp "${SCRIPT_DIR}/consul/init.conf" "/etc/init/consul.conf"
 
-if [ "${CONSUL_ROLE}" -eq "client" ]; then
+if [ "${CONSUL_ROLE}" == "client" ]; then
   # install the web ui on the slave
   curl -0L "https://dl.bintray.com/mitchellh/consul/${CONSUL_VERSION}_web_ui.zip"
   unzip "${CONSUL_VERSION}_web_ui.zip"
@@ -70,7 +72,7 @@ else
 fi
 
 # conditionally bootstrap the consul cluster
-if [ "${CONSUL_ROLE}" -eq "bootstrap" ]; then
+if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
   # bootstrap the consul cluster
   su consul
   timout 5 consul agent -config-dir /etc/consul.d/bootstrap
