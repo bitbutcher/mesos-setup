@@ -42,10 +42,11 @@ if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
 fi
 
 JOIN_CLUSTER=$(join , $(surround \" "${JOIN_CLUSTER[@]}"))
-for ROLE in "bootrap server client"
+declare -a ROLES=("bootrap" "server" "client")
+for ROLE in "${ROLES[@]}"
 do
-  local CONF_DIR="/etc/consul.d/${ROLE}"
-  sudo mkdir -p $DIR
+  CONF_DIR="/etc/consul.d/${ROLE}"
+  sudo mkdir -p "${CONF_DIR}"
   cp "${SCRIPT_DIR}/consul/${ROLE}.json" "${CONF_DIR}/config.json"
   sed -e "s/{{datacenter}}/${DATACENTER}/" -e "s/{{key}}/${CONSUL_KEY}/" -e "s/{{cluster}}/${JOIN_CLUSTER}/" "${CONF_DIR}/config.json"
 done
