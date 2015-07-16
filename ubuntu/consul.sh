@@ -42,7 +42,7 @@ if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
 fi
 
 JOIN_CLUSTER=$(join , $(surround \" "${JOIN_CLUSTER[@]}"))
-declare -a ROLES=("bootrap" "server" "client")
+declare -a ROLES=("bootstrap" "server" "client")
 for ROLE in "${ROLES[@]}"
 do
   CONF_DIR="/etc/consul.d/${ROLE}"
