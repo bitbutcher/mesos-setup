@@ -48,7 +48,7 @@ do
   CONF_DIR="/etc/consul.d/${ROLE}"
   sudo mkdir -p "${CONF_DIR}"
   cp "${SCRIPT_DIR}/consul/${ROLE}.json" "${CONF_DIR}/config.json"
-  sed -i -e "s/{{datacenter}}/${DATACENTER}/" -e "s/{{key}}/${CONSUL_KEY}/" -e "s/{{cluster}}/${JOIN_CLUSTER}/g" "${CONF_DIR}/config.json"
+  sed -i -e "s/{{datacenter}}/${DATACENTER}/" -e "s/{{key}}/${CONSUL_KEY}/" -e "s/{{cluster}}/${JOIN_CLUSTER}/" "${CONF_DIR}/config.json"
 done
 
 # setup the data directory
@@ -77,10 +77,9 @@ fi
 
 # conditionally bootstrap the consul cluster
 if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
-  # bootstrap the consul cluster
-  sudo su consul <<SUB
-  timout 5 consul agent -config-dir /etc/consul.d/bootstrap
-  SUB
+sudo su consul <<SUB
+timout 5 consul agent -config-dir /etc/consul.d/bootstrap
+SUB
 fi
 
 # start up the consul service
