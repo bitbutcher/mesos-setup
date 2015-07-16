@@ -41,6 +41,7 @@ if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
   echo "!!! SAVE THIS KEY >>> ${CONSUL_KEY} <<< SAVE THIS KEY !!!"
 fi
 
+CONSUL_QUORUM=$(expr ${#IPS[@]} / 2 + 1)
 JOIN_CLUSTER=$(join , $(surround \" "${JOIN_CLUSTER[@]}"))
 declare -a ROLES=("bootstrap" "server" "client")
 for ROLE in "${ROLES[@]}"
@@ -48,7 +49,8 @@ do
   CONF_DIR="/etc/consul.d/${ROLE}"
   sudo mkdir -p "${CONF_DIR}"
   cp "${SCRIPT_DIR}/consul/${ROLE}.json" "${CONF_DIR}/config.json"
-  sed -i -e "s|{{datacenter}}|${DATACENTER}|" -e "s|{{key}}|${CONSUL_KEY}|" -e "s|{{cluster}}|${JOIN_CLUSTER}|" "${CONF_DIR}/config.json"
+  sed -i -e "s|{{datacenter}}|${DATACENTER}|" -e "s|{{key}}|${CONSUL_KEY}|" -e "s|{{cluster}}|${JOIN_CLUSTER}|" \
+    -e "s|{{quorum}}|${CONSUL_QUORUM}|" "${CONF_DIR}/config.json"
 done
 
 # setup the data directory
