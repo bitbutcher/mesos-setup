@@ -30,7 +30,7 @@ sudo adduser consul
 
 # install the base consul binaries
 CONSUL_BIN_ZIP="${CONSUL_VERSION}_linux_amd64.zip"
-curl "https://dl.bintray.com/mitchellh/consul/${CONSUL_BIN_ZIP}" > "${CONSUL_BIN_ZIP}"
+curl -OL "https://dl.bintray.com/mitchellh/consul/${CONSUL_BIN_ZIP}"
 unzip "${CONSUL_BIN_ZIP}"
 sudo mv consul /usr/local/bin/consul
 rm "${CONSUL_BIN_ZIP}"
@@ -60,7 +60,7 @@ cp "${SCRIPT_DIR}/consul/init.conf" "/etc/init/consul.conf"
 if [ "${CONSUL_ROLE}" == "client" ]; then
   # install the web ui on the slave
   CONSUL_WEB_ZIP="${CONSUL_VERSION}_web_ui.zip"
-  curl "https://dl.bintray.com/mitchellh/consul/${CONSUL_WEB_ZIP}" > "${CONSUL_WEB_ZIP}"
+  curl -OL "https://dl.bintray.com/mitchellh/consul/${CONSUL_WEB_ZIP}"
   unzip "${CONSUL_WEB_ZIP}"
   sudo mkdir -p /usr/share/consul
   sudo mv dist /usr/share/consul/ui
@@ -77,8 +77,9 @@ fi
 # conditionally bootstrap the consul cluster
 if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
   # bootstrap the consul cluster
-  su consul
+  sudo su consul <<EOF
   timout 5 consul agent -config-dir /etc/consul.d/bootstrap
+  EOF
 fi
 
 # start up the consul service
