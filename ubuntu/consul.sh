@@ -78,7 +78,7 @@ fi
 # conditionally bootstrap the consul cluster
 if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
 sudo su consul <<SUB
-timeout 5 consul agent -config-dir /etc/consul.d/bootstrap
+consul agent -config-dir /etc/consul.d/bootstrap
 SUB
 fi
 
