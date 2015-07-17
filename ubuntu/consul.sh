@@ -28,14 +28,15 @@ sudo apt-get install -y unzip
 # create the consul user
 sudo adduser consul
 
-# provision a staging directory
-STAGING_DIR=$(mktemp -dt "$(basename $0).XXXXXX")
-
 # install the base consul binaries
+STAGING_DIR=$(mktemp -dt "$(basename $0).XXXXXXXXX")
+pushd "${STAGING_DIR}"
 CONSUL_BIN_ZIP="${CONSUL_VERSION}_linux_amd64.zip"
-curl -L "https://dl.bintray.com/mitchellh/consul/${CONSUL_BIN_ZIP}" -o "${STAGING_DIR}/${CONSUL_BIN_ZIP}"
-unzip "${STAGING_DIR}/${CONSUL_BIN_ZIP}"
-sudo mv "${STAGING_DIR}/consul" /usr/local/bin/consul
+curl -OL "https://dl.bintray.com/mitchellh/consul/${CONSUL_BIN_ZIP}"
+unzip "${CONSUL_BIN_ZIP}"
+sudo mv consul /usr/local/bin
+popd
+rm -rf "${STAGING_DIR}"
 
 # setup configurations for all agent roles
 if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
@@ -64,12 +65,16 @@ cp "${SCRIPT_DIR}/consul/init.conf" "/etc/init/consul.conf"
 
 if [ "${CONSUL_ROLE}" == "client" ]; then
   # install the web ui on the slave
+  STAGING_DIR=$(mktemp -dt "$(basename $0).XXXXXXXXX")
+  pushd "${STAGING_DIR}"
   CONSUL_WEB_ZIP="${CONSUL_VERSION}_web_ui.zip"
-  curl -L "https://dl.bintray.com/mitchellh/consul/${CONSUL_WEB_ZIP}" -o "${STAGING_DIR}/${CONSUL_WEB_ZIP}"
-  unzip "${STAGING_DIR}/${CONSUL_WEB_ZIP}"
+  curl -OL "https://dl.bintray.com/mitchellh/consul/${CONSUL_WEB_ZIP}"
+  unzip "${CONSUL_WEB_ZIP}"
   sudo mkdir -p /usr/share/consul
   sudo mv dist /usr/share/consul/ui
   sudo chown -R consul:consul /usr/share/consul
+  popd
+  rm -rf "${STAGING_DIR}"
 
   # set the role of the upstart service to 'client'
   sed -i -e "s|{{role}}|client|" "/etc/init/consul.conf"
@@ -77,9 +82,6 @@ else
   # set the role of the upstart service to server
   sed -i -e "s|{{role}}|server|" "/etc/init/consul.conf"
 fi
-
-# destroy the staging directory
-rm -rf ${STAGING_DIR}
 
 # conditionally bootstrap the consul cluster
 if [ "${CONSUL_ROLE}" == "bootstrap" ]; then
