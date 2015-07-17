@@ -6,8 +6,6 @@
   "encrypt": "{{key}}",
   "log_level": "INFO",
   "enable_syslog": true,
-  "leave_on_terminate": true,
-  "rejoin_after_leave": true,
   "start_join": [{{cluster}}],
   "retry_join": [{{cluster}}]
 }
