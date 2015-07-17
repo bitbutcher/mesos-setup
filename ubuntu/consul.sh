@@ -29,7 +29,7 @@ sudo apt-get install -y unzip
 sudo adduser consul
 
 # provision a staging directory
-STAGING_DIR=$(mktemp -dt "$0")
+STAGING_DIR=$(mktemp -dt "$(basename $0).XXXXXX")
 
 # install the base consul binaries
 CONSUL_BIN_ZIP="${CONSUL_VERSION}_linux_amd64.zip"
