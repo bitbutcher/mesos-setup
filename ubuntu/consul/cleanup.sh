@@ -9,4 +9,5 @@ sudo rm /etc/init/consul.conf
 sudo rm -rf /usr/share/consul
 
 # remove the consul user
-sudo deluser consul
+sudo deluser --remove-all-files consul
+sudo delgroup --remove-all-files consul
