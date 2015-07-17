@@ -8,7 +8,7 @@ if [ -z "${DATACENTER}" ]; then
 fi
 
 JOIN_CLUSTER=($(filter $NODE_IP "${IPS[@]}"))
-echo "JOIN_CLUSTER: $JOIN_CLUSTER"
+echo "JOIN_CLUSTER: ${JOIN_CLUSTER[@]}"
 if [ "$NODE_IP" == "${IPS[0]}" ]; then
   CONSUL_ROLE="bootstrap"
 else
