@@ -1,8 +1,12 @@
-service consul stop
+# stop the service
+sudo service consul stop
 
-# consul
-rm -rf /var/lib/consul
-rm /usr/local/bin/consul
-rm -rf /etc/consul.d/
-rm /etc/init/consul.conf
-rm -rf /usr/share/consul
+# clean up files
+sudo rm -rf /var/lib/consul
+sudo rm /usr/local/bin/consul
+sudo rm -rf /etc/consul.d/
+sudo rm /etc/init/consul.conf
+sudo rm -rf /usr/share/consul
+
+# remove the consul user
+sudo deluser consul
