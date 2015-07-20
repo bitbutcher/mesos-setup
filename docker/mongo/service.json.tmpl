@@ -1,0 +1,15 @@
+{
+  "ID": "{{container-id}},
+  "Name": "{{env}}-{{app}}-{{comp}}",
+  "Address": "127.0.0.1",
+  "Port": {{port}},
+  "Check": {
+    "Script": "docker exec {{container-id}} /usr/local/share/consul/health.sh",
+    "Interval": "10s"
+  },
+  "Tags": [
+    "{{env}}",
+    "{{app}}",
+    "{{comp}}"
+  ]
+}
