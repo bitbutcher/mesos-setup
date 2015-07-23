@@ -26,6 +26,7 @@ curl -sSL https://get.docker.com/ | sh
 
 # build kubernetes
 git clone https://github.com/GoogleCloudPlatform/kubernetes
+git checkout "tags/v${KUBERNETES_VERSION}"
 pushd kubernetes
   KUBERNETES_CONTRIB=mesos make
   mv "_output/local/go/bin/*" "/usr/local/go/bin"
