@@ -47,4 +47,7 @@ sudo service mesos-master restart
 sudo service marathon restart
 
 # conditionally install consul
-source "$SCRIPT_DIR/consul.sh"
+source "$SCRIPT_DIR/consul/install.sh"
+
+#conditionally install kubernetes
+source "$SCRIPT_DIR/kubernetes/install.sh"
